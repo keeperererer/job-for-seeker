@@ -82,6 +82,7 @@ export default{
 		},
 		search:function(){
 			this.$router.push('/Jobs')
+			this.$emit('sendValue', this.search_data)
 		}
 	}
 }

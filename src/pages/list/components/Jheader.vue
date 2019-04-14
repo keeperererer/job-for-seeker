@@ -1,19 +1,37 @@
 <template>
 	<div class="jheader">
-		<home-header></home-header>
+		<home-header @sendValue='showData'></home-header>
 		<home-search></home-search>
 	</div>
 
 </template>
 
 <script>
+import bus from '../../../assets/script/bus'
 import HomeHeader from '../../home/components/Header'
 import HomeSearch from '../../home/components/Search'
 export default {
 	name: 'ListJheader',
-	components :{
+	data () {
+		return {
+			copyData: ''
+		}
+	},
+	components: {
 		HomeSearch,
 		HomeHeader
+	},
+	methods: {
+		showData: function(data) {
+			console.log(data)
+			this.copyData = data
+		},
+		getData: function(){
+			bus.$emit('toSon',this.copyData)
+		}
+	},
+	mounted() {
+		this.getData()
 	}
 }
 $(document).ready(function(){

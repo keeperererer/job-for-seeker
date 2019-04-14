@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/job':{
-            target:'http://47.100.121.23:8080/job',
+            target:'http://47.100.121.23:8080/',
             changeOrigin:true,
             pathRewrite:{
                 '^/job':''

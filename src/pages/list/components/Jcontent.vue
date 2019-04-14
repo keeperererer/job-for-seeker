@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import bus from '../../../assets/script/bus'	
 import axios from 'axios'
 export default {
 	name: 'ListJcontent',
@@ -54,7 +55,8 @@ export default {
 
 			}],
 			active:false,
-			dataLists:[]
+			dataLists:[],
+			jobData: ''
 
 		}
 	},
@@ -62,22 +64,13 @@ export default {
         this.getDataDetail()
 		// this.display = this.Lists1.length;
 	},
-    // mounted () {
-	// 	// axios.get('/job/main/jobSearch',{
-	// 	// 	query:{
-	// 	// 		search:'java',
-	// 	// 		choice:'position'
-	// 	// 	}
-	// 	// }).then(function (response) {
-    // 	// 	console.log(response);
-	// 	  // })
-	// 	axios.get('/job/main/jobSearch?search=java&choice=position')
-	// 	.then(function (response) {
-	// 		console.log(response);
-	// 		this.Lists = response.data.data
-	// 	  })
-	// 	  //`/job/jobLibrary/${job}`
-	// },
+    mounted () {
+		var self = this;
+		bus.$on("toSon",function(msg){
+			self.jobData = msg
+		})
+		console.log(self.jobData)
+	},
 	methods:{
 		tabsSwitch: function(index) {
 			this.$emit('tabs', index)
@@ -87,7 +80,7 @@ export default {
 		// 	.then(this.getDataList)
 		// },
 		getDataDetail() {
-			axios.get('/job/main/jobSearch',{
+			axios.get('/job/job/main/jobSearch',{
 			params:{
 				search:'java',
 				choice:'position'

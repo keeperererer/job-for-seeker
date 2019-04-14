@@ -16,7 +16,7 @@
 		</div>
 	</ul>
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
- 	<form action="http://47.100.121.23:8080/job/user/login" style="margin-top:60px;"  :model="ruleForm" :rules="rules" method="post">
+ 	<form style="margin-top:60px;"  :model="ruleForm" :rules="rules">
 	 	<div class="modal-dialog" style="width:30%">
         	<div class="modal-content">
            		<div class="modal-header">
@@ -63,7 +63,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default z-close" data-dismiss="modal">关闭</button>
-					<input type="submit" value="注册" class="btn btn-primary" @click="judge(form2)">
+					<input type="button" value="注册" class="btn btn-primary" @click="judge">
 				</div>
 			</div>
 		</div>
@@ -74,10 +74,12 @@
 </template>
 
 <script> 
+import axios from 'axios'
 export default {
 	name: 'HomeHeader',
 	data () {
 		return {
+			show:false,
 			navList:[{
 				id:'1',
 				title:'首页',
@@ -272,52 +274,102 @@ export default {
 			}
 		},
 		test_password(data,ver){
-			data.title=="密码" ? this.first_pwd = ver : this.sec_pwd = ver;
- 			if(data.title == '密码'){
-				if(this.first_pwd === ''){
-					console.log("不能为空");
-					data.error = true;
-					data.right = false;
-				}else{
-					let reg = /^\w{4,10}$/;	
-					if(reg.test(this.first_pwd)){	
-						console.log("输入正确");
-						data.right = true;
-						data.error = false;
-					}else{
-						console.log("请输入正确的密码");
-						data.error = true;
-						data.right = false;
-					}
-				}
-			}else{
-				let reg = /^\w{4,10}$/;
-				if(reg.test(this.first_pwd)){
-					if(this.first_pwd === this.sec_pwd){
-						console.log('验证正确');
-						data.right = true;
-						data.error = false;
-					}else{
-						console.log('验证错误');
-						data.error = true;
-						data.right = false;
-					}
-				}else{
-					console.log('错误');
-					data.error = true;
-					data.right = false;	
-					}
-				}
 		},
-		judge(form2){
-			console.log(form2);
-			if(!value){
-				alert("不能为空")
-			}
-
+		// judge(){
+		// 	let data = {
+		// 		name: this.formList2[0].value,
+		// 		number:this.formList2[1].value,
+		// 		email: this.formList2[2].value,
+		// 		password: this.formList2[3].value
+		// 	};
+		// 	this.$http.post('/job/user/register',data)
+		// 	.then(function (response) {
+		// 		console.log(response)
+		// 	})
+		// 	.catch(function(err){
+		// 		throw new Error(err.message)
+		// 	})
+	        
+		// },
+		// judge(){
+		// 	let data = {
+		// 		name: this.formList2[0].value,
+		// 		number:this.formList2[1].value,
+		// 		email: this.formList2[2].value,
+		// 		password: this.formList2[3].value
+		// 	};
+		// 	axios.post('/job/user/register',
+		// 		JSON.stringify(data),{
+		// 			headers:{'Content-Type':'application/json'}
+		// 		}).then(function(response){
+		// 			console.log(response)
+		// 		}).catch(function(error){
+		// 			console.log(error)
+		// 		})
+		// },
+		judge(){
+			
+			let _this = this;
+			$.ajax({
+	          url: '/job/job/user/register',
+	          type: 'post',
+	          // data对象中的属性名要和服务端控制器的参数名一致 login(name, password)
+	          data: {
+	            'useraccount': this.formList2[0].value,
+				'telephone':this.formList2[1].value,
+				'email': this.formList2[2].value,
+				'password': this.formList2[3].value
+	          },
+	          dataType: 'JSONP',
+	          success: function (response) {
+ 					
+ 					if(response) {
+ 						console.log("成功")
+ 						alert('恭喜，注册成功！')
+ 						// _this.$router.push('/Jobs')
+ 					}
+	          },
+	          error: function (e) {
+	            console.log(e)
+	            if(e){
+	            	alert('失败')
+	            	// _this.$router.push('/Jobs')
+	            	
+	            }
+	          }
+        	})
 		},
 		submitForm(formName) {
 			console.log('submitForm');
+
+			let _this = this;
+			$.ajax({
+	          url: '/job/job/user/login',
+	          type: 'post',
+	          // data对象中的属性名要和服务端控制器的参数名一致 login(name, password)
+	          data: {
+	            'username': _this.ruleForm.username,
+	            'password': _this.ruleForm.password
+	          },
+	          dataType: 'JSONP',
+	          success: function (response) {
+ 					
+ 					if(response) {
+ 						console.log("成功")
+ 						alert('恭喜，登录成功！')
+
+ 					}
+	          },
+	          error: function (e) {
+	            console.log(e)
+	            if(e){
+	            	console.log('登录失败')
+	            	
+	            }
+	          }
+        	})
+
+
 			 //判断复选框是否被勾选 勾选则调用配置cookie方法
 			if(this.checked){
 				 //传入账号名，密码，和保存天数3个参数
