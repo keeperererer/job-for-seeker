@@ -42,7 +42,7 @@ export default {
 				'time'
 			]
 			let job = apis.find((val,i) => this.index == i)
-			axios.get(`/job/job/jobLibrary/${job}`)
+			axios.get(`/job/jobLibrary/${job}`)
 				.then(this.getJobInfoSucc)
 		},
 		getJobInfoSucc(res){

@@ -311,7 +311,7 @@ export default {
 			
 			let _this = this;
 			$.ajax({
-	          url: '/job/job/user/register',
+	          url: '/job/user/register',
 	          type: 'post',
 	          // data对象中的属性名要和服务端控制器的参数名一致 login(name, password)
 	          data: {
@@ -332,7 +332,7 @@ export default {
 	          error: function (e) {
 	            console.log(e)
 	            if(e){
-	            	alert('失败')
+	            	alert('注册失败')
 	            	// _this.$router.push('/Jobs')
 	            	
 	            }
@@ -344,7 +344,7 @@ export default {
 
 			let _this = this;
 			$.ajax({
-	          url: '/job/job/user/login',
+	          url: '/job/user/login',
 	          type: 'post',
 	          // data对象中的属性名要和服务端控制器的参数名一致 login(name, password)
 	          data: {
@@ -364,6 +364,7 @@ export default {
 	            console.log(e)
 	            if(e){
 	            	console.log('登录失败')
+	            	alert('登录失败')
 	            	
 	            }
 	          }

@@ -80,7 +80,7 @@ export default {
 		// 	.then(this.getDataList)
 		// },
 		getDataDetail() {
-			axios.get('/job/job/main/jobSearch',{
+			axios.get('/job/main/jobSearch',{
 			params:{
 				search:'java',
 				choice:'position'
