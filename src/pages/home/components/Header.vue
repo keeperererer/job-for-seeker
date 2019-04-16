@@ -274,6 +274,42 @@ export default {
 			}
 		},
 		test_password(data,ver){
+			data.title=="密码" ? this.first_pwd = ver : this.sec_pwd = ver;
+ 			if(data.title == '密码'){
+				if(this.first_pwd === ''){
+					console.log("不能为空");
+					data.error = true;
+					data.right = false;
+				}else{
+					let reg = /^\w{4,10}$/;	
+					if(reg.test(this.first_pwd)){	
+						console.log("输入正确");
+						data.right = true;
+						data.error = false;
+					}else{
+						console.log("请输入正确的密码");
+						data.error = true;
+						data.right = false;
+					}
+				}
+			}else{
+				let reg = /^\w{4,10}$/;
+				if(reg.test(this.first_pwd)){
+					if(this.first_pwd === this.sec_pwd){
+						console.log('验证正确');
+						data.right = true;
+						data.error = false;
+					}else{
+						console.log('验证错误');
+						data.error = true;
+						data.right = false;
+					}
+				}else{
+					console.log('错误');
+					data.error = true;
+					data.right = false;	
+					}
+				}
 		},
 		// judge(){
 		// 	let data = {
@@ -363,6 +399,7 @@ export default {
 	          error: function (e) {
 	            console.log(e)
 	            if(e){
+	            	// console.log(e.responseText[0])
 	            	console.log('登录失败')
 	            	alert('登录失败')
 	            	
