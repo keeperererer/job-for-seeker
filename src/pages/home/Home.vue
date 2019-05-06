@@ -17,10 +17,10 @@ export default {
 		HomeHeader,
 		HomeSearch,
 		HomeFooter
-	}
+	},
 }
 </script>
 
 <style>
-	
+
 </style>

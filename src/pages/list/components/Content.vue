@@ -2,7 +2,7 @@
 <div class="bg">
 	<div class="overlay-bg"></div>
 	<div class="content">
-		<form action="http://47.100.121.23:8080/job/userinfo/userinfo" class="serach-form-area" method="post">
+		<form  class="serach-form-area">
 			<div class="form-header span1">
 				个人信息填写
 			</div>
@@ -10,33 +10,33 @@
 				<div class="form-body">
 					<div class="form-group">
 						<span class="form-span">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</span>
-						<input type="text" class="form-control for1" name="username">
+						<input type="text" class="form-control for1" name="username" v-model="name">
 					</div>
 					<div class="form-group">
 						<span class="form-span">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄:</span>
-						<input type="text" class="form-control for1" name="age">
+						<input type="text" class="form-control for1" name="age" v-model="age">
 					</div>
 					<div class="form-group">
-						<span class="form-span" style="margin-right:3%">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:</span> 
+						<span class="form-span" style="margin-right:3%">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:</span>
 						<div class="man">
 							<input id="item1" type="radio" name="gender" value="man" checked />
-							<label for="item1"></label> 
+							<label for="item1"></label>
 							<span style="margin-left:28px" class="spansex">男</span>
-						</div>     
+						</div>
  						<div class="man" style="margin-left:3%;">
  							<input id="item2" type="radio" name="gender" value="woman"/>
 							<label for="item2"></label>
 							<span style="margin-left:25px" class="spansex">女</span>
  						</div>
-						
+
 					</div>
 					<div class="form-group">
 						<span class="form-span">手机号码:</span>
-						<input type="text" class="form-control for1" style="width:30%" name="telephone">
+						<input type="text" class="form-control for1" style="width:30%" name="telephone" v-model="telephone">
 					</div>
 					<div class="form-group">
 						<span class="form-span">最高学历:</span>
-						<select  class="form-select">
+						<select  class="form-select" @change="showValue">
 						  <option>大专</option>
 						  <option selected="selected">本科</option>
 						  <option>硕士</option>
@@ -46,15 +46,15 @@
 					</div>
 					<div class="form-group">
 						<span class="form-span">毕业学校:</span>
-						<input type="text" class="form-control for1" style="width:30%" name="school">
+						<input type="text" class="form-control for1" style="width:30%" name="school" v-model="school">
 					</div>
 					<div class="form-group">
 						<span class="form-span">主修专业:</span>
-						<input type="text" class="form-control for1" style="width:30%" name="major">
+						<input type="text" class="form-control for1" style="width:30%" name="major" v-model="major">
 					</div>
 					<div class="form-group">
 						<span class="form-span">工作经验:</span>
-						<select  class="form-select">
+						<select  class="form-select" @change="showExp">
 							<option >无经验</option>
 							<option>1年以下</option>
 							<option selected="selected">1-3年</option>
@@ -65,28 +65,28 @@
 					</div>
 					<div class="form-group">
 						<span class="form-span">期望城市:</span>
-						<input type="text" class="form-control for1" style="width:30%" name="city">
+						<input type="text" class="form-control for1" style="width:30%" name="city" v-model="city">
 					</div>
 					<div class="form-group">
 						<span class="form-span">期望职位:</span>
-						<input type="text" class="form-control for1" style="width:30%" name="job">
+						<input type="text" class="form-control for1" style="width:30%" name="job" v-model="job">
 					</div>
 					<div class="form-group">
 						<span class="form-span">期望薪资:</span>
-						<input type="text" class="form-control for1" style="width:30%" name="wishsalary">
+						<input type="text" class="form-control for1" style="width:30%" name="wishsalary" v-model="wishsalary">
 					</div>
 					<div class="form-group">
 						<span class="form-span">个人技能:</span>
-						<textarea name="experience" id="" cols="30" rows="10" style="height:200px;width:80%;margin-left:15%;border: 1px solid #ccc;
-background: #fff;">
-							
+						<textarea name="experience"  cols="30" rows="10" style="height:200px;width:80%;margin-left:15%;border: 1px solid #ccc;
+background: #fff;" v-model="skill">
+
 						</textarea>
 					</div>
 					<div class="form-group">
 						<span class="form-span">实践经验:</span>
-						<textarea name="experience" id="" cols="30" rows="10" style="height:200px;width:80%;margin-left:15%;border: 1px solid #ccc;
-background: #fff;">
-							
+						<textarea name="experience"  cols="30" rows="10" style="height:200px;width:80%;margin-left:15%;border: 1px solid #ccc;
+background: #fff;" v-model="experience">
+
 						</textarea>
 					</div>
 				</div>
@@ -119,18 +119,19 @@ background: #fff;">
 
 
 				<div class="form-footer">
-					<input type="submit" value="保存信息" class="form-sub">
+					<input type="submit" value="保存信息" class="form-sub" @click="postInfo">
 				</div>
 			</div>
-			
+
 		</form>
 
 	</div>
-	 
+
 </div>
 </template>
 
 <script>
+const API_PROXY = 'https://bird.ioliu.cn/v1/?url='
 export default {
 	name: 'ListContent',
 	data () {
@@ -139,7 +140,19 @@ export default {
 			ptxt1: '',
 			ptxt2:'',
 			ptxt3:'',
-			ptxt4:''
+			ptxt4:'',
+      name: '',
+      age: '',
+      telephone: '',
+      grade: '',
+      school: '',
+      major: '',
+      exprence: '',
+      city: '',
+      job: '',
+      wishsalary: '',
+      skill: '',
+      experience: ''
 		}
 	},
 	methods: {
@@ -162,7 +175,7 @@ export default {
 			}
 		},
 		handleCleanBar1 () {
-			document.onmousemove = null; 
+			document.onmousemove = null;
 			document.onmouseup = function(){
 				document.onmousemove = null;
 			}
@@ -186,7 +199,7 @@ export default {
 			}
 		},
 		handleCleanBar2 () {
-			document.onmousemove = null; 
+			document.onmousemove = null;
 			document.onmouseup = function(){
 				document.onmousemove = null;
 			}
@@ -210,7 +223,7 @@ export default {
 			}
 		},
 		handleCleanBar3 () {
-			document.onmousemove = null; 
+			document.onmousemove = null;
 			document.onmouseup = function(){
 				document.onmousemove = null;
 			}
@@ -234,11 +247,45 @@ export default {
 			}
 		},
 		handleCleanBar4 () {
-			document.onmousemove = null; 
+			document.onmousemove = null;
 			document.onmouseup = function(){
 				document.onmousemove = null;
 			}
-		}
+		},
+    showValue (value) {
+      this.grade = value.srcElement.value
+    },
+    showExp (value) {
+		    this.exprence = value.srcElement.value
+    },
+    postInfo() {
+      $.ajax({
+        type: 'post',
+        url: API_PROXY + 'http://47.100.121.23:8080/job/userinfo/userinfo',
+        data: {
+            'username': this.name,
+            'age': this.age,
+          'telephone':this.telephone,
+          'background': this.grade,
+          'school': this.school,
+          'major': this.major,
+          'workTime': this.exprence,
+          'city': this.city,
+          'job': this.job,
+          'salary': this.wishsalary,
+          'skill': this.skill,
+          'experience': this.experience
+        },
+        dataType: 'jsonp',
+        success: function (response) {
+          console.log(response)
+          if(response){
+              alert('个人信息编辑成功')
+            this.name = response.data.username
+          }
+        }
+      })
+    }
 	}
 }
 
@@ -260,7 +307,7 @@ export default {
 .span1{
 	font-size:20px;
 	text-align:left;
-}	
+}
 .for1{
 	background: #fff;
     border-bottom: 1px solid #afaeb5;
@@ -304,7 +351,7 @@ input[type="radio"] {
     border: 1px solid #c7c6c6;;
     margin-left:10%;
 }
-input[type="radio"]:checked+label { 
+input[type="radio"]:checked+label {
     background: #846cff;
     border: 1px solid #846cff;
 }

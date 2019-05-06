@@ -1,7 +1,7 @@
 <template>
 	<div class="jheader">
-		<home-header @sendValue='showData'></home-header>
-		<home-search></home-search>
+		<home-header></home-header>
+		<home-search @getDataLists='showData'></home-search>
 	</div>
 
 </template>
@@ -14,25 +14,25 @@ export default {
 	name: 'ListJheader',
 	data () {
 		return {
-			copyData: ''
+			copyData: [],
+			searchList:[]
 		}
 	},
 	components: {
 		HomeSearch,
 		HomeHeader
 	},
+  watch: {
+	copyData () {
+	    this.$emit('toFatherData', this.copyData)
+	},
+  },
 	methods: {
 		showData: function(data) {
-			console.log(data)
 			this.copyData = data
-		},
-		getData: function(){
-			bus.$emit('toSon',this.copyData)
 		}
 	},
-	mounted() {
-		this.getData()
-	}
+	mounted() {},
 }
 $(document).ready(function(){
 	$(window).scroll(function(){

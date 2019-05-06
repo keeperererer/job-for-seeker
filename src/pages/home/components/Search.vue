@@ -5,7 +5,7 @@
 		<span class="span1">
 		我们将为您提供最适合您的岗位
 		</span>
-		<form action="http://47.100.121.23:8080/job/main/jobSearch" class="serach-form-area" method="get">
+		<form  class="serach-form-area">
 			<div class="form-wrap">
 				<div class="form-content">
 				<div class="form-c form-c1">
@@ -13,7 +13,7 @@
 				</div>
 				<div class="form-c form-c2">
 					<div id="default-selects">
-						<select  class="form-select form-control" name="choice">
+						<select  class="form-select form-control" name="choice" @change="showChoice">
 							<option value="position">岗位</option>
 							<option value="company">公司</option>
 						</select>
@@ -23,19 +23,20 @@
 				    <button type="button" class="btn search-btn" @click="search">
 				       Search
 				    </button>
-				</div>	
-				</div>							
+				</div>
+				</div>
 			</div>
-		</form>	
+		</form>
 		<div class="tips">
-			我们为您提供<router-link to="#" class="jobs" v-for="job of jobList" :key="job.id" @click.native="jobClick(job)">{{job.title}}</router-link>方向的岗位
+			我们为您提供<router-link to="#" class="jobs" v-for="job in jobList" :key="job.id" @click.native="jobClick(job)">{{job.title}}</router-link>方向的岗位
 		</div>
 	</div>
-	
+
 </div>
 </template>
 
 <script>
+const API_PROXY = 'https://bird.ioliu.cn/v1/?url='
 export default{
 	name: 'HomeSearch',
 	data () {
@@ -46,44 +47,71 @@ export default{
 			},{
 				id:'2',
 				title:'Python'
-				
+
 			},{
 				id:'3',
 				title:'数据分析师'
-				
+
 			},{
 				id:'4',
 				title:'Android'
-				
+
 			},{
 				id:'5',
 				title:'Hadoop'
-				
+
 			},{
 				id:'6',
 				title:'Web前端'
-				
+
 			},{
 				id:'7',
 				title:'人工智能'
-				
+
 			},{
 				id:'8',
 				title:'PHP'
-				
+
 			}],
-			search_data:''
+			search_data:'',
+      choice: 'position',
+      dataLists: []
 		}
 	},
 	methods:{
-		jobClick : function(i){	
-			console.log(i.title);
+		jobClick : function(i){
+			// console.log(i.title);
 			this.search_data = i.title;
 		},
 		search:function(){
-			this.$router.push('/Jobs')
-			this.$emit('sendValue', this.search_data)
-		}
+			$.get(`${API_PROXY}http://47.100.121.23:8080/job/main/jobSearch`,{search:this.search_data,choice:this.choice},(res)=>{
+				this.getDataList(res)
+				// this.$emit('getDataLists', this.dataLists)
+			})
+      // var _self = this
+      // $.ajax({
+      //   type: 'GET',
+      //   url:  + '' +  + '' + ,
+      //   dataType: 'jsonp',
+      //   success: function (result) {
+      //     _self.getDataList(result)
+      //     _self.$emit('getDataLists', _self.dataLists)
+      //   }
+      // })
+		},
+    getDataList(res) {
+			if(this.$route.path != '/Jobs'){
+				this.dataLists = res.data
+				this.$router.push({name:'Jobs',params:{data:this.dataLists}})
+			}else{
+				this.$emit('getDataLists',res.data)
+			}
+			
+      // console.log(this.dataLists)
+    },
+    showChoice(value) {
+      this.choice = value.srcElement.value
+    }
 	}
 }
 </script>

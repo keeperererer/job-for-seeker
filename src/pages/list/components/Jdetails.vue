@@ -21,10 +21,10 @@ export default {
 		ListJdleft,
 		ListJdright
 	}
-}	
+}
 </script>
 
 <style lang="stylus" scoped>
-	
+
 
 </style>

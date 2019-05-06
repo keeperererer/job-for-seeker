@@ -7,12 +7,14 @@ import fastClick from 'fastclick'
 import $ from 'jquery'
 import echarts from 'echarts'
 import ajax from './assets/script/ajax.js'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 import './assets/styles/reset.css'
 import './assets/styles/iconfont.css'
 import './assets/styles/bootstrap.min.css'
 import './assets/script/bootstrap.min'
 
-
+Vue.use(ElementUI);
 Vue.prototype.$http = ajax
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
